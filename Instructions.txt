@@ -1,0 +1,3 @@
+Collect money and make your way to the exit
+press e to unfold trap money
+move with w,a,s,d

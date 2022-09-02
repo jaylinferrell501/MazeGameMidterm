@@ -24,6 +24,7 @@
     <ProjectGuid>{453a6eac-b952-4ec2-968e-e883a845cf0a}</ProjectGuid>
     <RootNamespace>MazeGameMidterm</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>BombGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,17 +140,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Appearance.cpp" />
+    <ClCompile Include="BehaviorStrategy.cpp" />
     <ClCompile Include="GameBoard.cpp" />
     <ClCompile Include="GamePad.cpp" />
-    <ClCompile Include="MazeGameMidterm.cpp" />
+    <ClCompile Include="BombGame.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="strategy.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Appearance.h" />
+    <ClInclude Include="BehaviorStrategy.h" />
     <ClInclude Include="GameBoard.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="strategy.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="UI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="BombTile.txt" />
+    <Text Include="ExitTile.txt" />
+    <Text Include="FloorTile.txt" />
+    <Text Include="Instructions.txt" />
+    <Text Include="MimicTile.txt" />
+    <Text Include="MoneyTile.txt" />
+    <Text Include="Surprise.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MazeGameMidterm.cpp">
+    <ClCompile Include="BombGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameBoard.cpp">
@@ -27,7 +27,19 @@
     <ClCompile Include="GamePad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Appearance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,8 +53,41 @@
     <ClInclude Include="GamePad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="strategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Appearance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MoneyTile.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="BombTile.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="MimicTile.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="FloorTile.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="ExitTile.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Surprise.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Instructions.txt" />
   </ItemGroup>
 </Project>

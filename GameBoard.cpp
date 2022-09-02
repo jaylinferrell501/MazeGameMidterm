@@ -1,85 +1,87 @@
 #include "GameBoard.h"
 
+#include <conio.h>
 #include <iostream>
-
-#include "Enemy.h"
+#include<fstream>
 #include "Player.h"
 
 GameBoard::GameBoard()
-	:m_Board{ {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
-		      {'#','.','.','.','.','.','.','.','.','#','#','#','#','#','#','#','#','#','#','#'},
-		      {'#','.','#','#','#','#','#','.','#','#','.','.','.','.','.','#','#','#','#','#'},
-		      {'#','.','.','.','.','.','.','.','.','.','.','#','#','#','.','#','#','#','#','#'},
-		      {'#','#','#','#','.','#','#','.','#','#','.','#','#','#','.','#','#','#','#','#'},
-		      {'#','#','#','#','.','#','#','.','#','#','.','.','.','.','.','.','#','.','$','#'},
-		      {'#','#','#','#','.','#','#','.','#','#','#','#','#','#','#','#','#','.','#','#'},
-		      {'#','#','#','#','.','#','#','.','#','#','#','#','#','#','#','#','#','.','#','#'},
-		      {'#','#','#','#','.','#','#','.','.','.','.','.','.','.','.','.','.','.','#','#'},
-		      {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}}
-
-	,m_FogOfWar{ {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-			     {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-			     {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'},
-				 {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'}, }
-	,m_Length(4)
-	,m_Width(4)
+	:m_Length(20)
+	,m_Width(40)
 {
 }
 
-void GameBoard::DrawMaze(Player* pPlayer, Enemy* pEnemy1, Enemy* pEnemy2)
+void GameBoard::MakeMap(Player* pPlayer, Tile& aTile)
 {
-	UpdateMaze(pPlayer, pEnemy1, pEnemy2);
-	
+	const Tile Exit = aTile.Tiles("ExitTile.txt");
+	const Tile Surprise = aTile.Tiles("Surprise.txt");
+	const int x = rand() % 40;
+	const int y = rand() % 20;
+
 	for (int i = 0; i < m_Length; i++)
 	{
 		for(int j = 0; j < m_Width; j++)
 		{
-			std::cout << m_Board[i][j];
+			m_Board[i][j] = mTileAppearance.ExecuteStrategy(aTile);
+		}
+	}
+	m_Board[19][39] = Exit;
+	m_Board[y][x] = Surprise;
+}
+
+void GameBoard::DrawMap(Player* pPlayer, const Tile& floorTile, const Tile& mimicTile, const Tile& BombTile)
+{
+	UpdateMap(pPlayer, floorTile, mimicTile, BombTile);
+	for (int i = 0; i < m_Length; i++)
+	{
+		for (int j = 0; j < m_Width; j++)
+		{
+			std::cout << m_Board[i][j].GetTile();
 		}
 		std::cout << "" << std::endl;
 	}
-
 	pPlayer->CheckLastPosition();
-	pEnemy1->CheckLastPosition();
-	
 }
 
-void GameBoard::UpdateMaze(Player* pPlayer, Enemy* pEnemy1, Enemy* pEnemy2)
+void GameBoard::UpdateMap(const Player* pPlayer, const Tile& floorTile, const Tile& mimicTile, const Tile& BombTile)
 {
 	if (pPlayer->GetY() == pPlayer->GetLastY() && pPlayer->GetX() == pPlayer->GetLastX())
 	{
-		m_Board[pPlayer->GetY()][pPlayer->GetX()] = pPlayer->GetSymbol();
+		m_Board[pPlayer->GetY()][pPlayer->GetX()].SetTile(pPlayer->GetSymbol());
 	}
 	else
 	{
-		m_Board[pPlayer->GetY()][pPlayer->GetX()] = pPlayer->GetSymbol();
-		m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = '.';
-	}
+		m_Board[pPlayer->GetY()][pPlayer->GetX()].SetTile(pPlayer->GetSymbol());
 
-	if (pEnemy1->GetY() == pEnemy1->GetLastY() && pEnemy1->GetX() == pEnemy1->GetLastX())
-	{
-		m_Board[pEnemy1->GetY()][pEnemy1->GetX()] = pEnemy1->GetSymbol();
-	}
-	else
-	{
-		m_Board[pEnemy1->GetY()][pEnemy1->GetX()] = pEnemy1->GetSymbol();
-		m_Board[pEnemy1->GetLastY()][pEnemy1->GetLastX()] = '.';
-	}
+		if (m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()].GetTileType() == "Mimic")
+		{
+			mTileBehavior.SetMimicTriggered(true);
+			m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = mTileBehavior.ExecuteStrategy(mimicTile);
+		}
 
-	if (pEnemy2->GetY() == pEnemy2->GetLastY() && pEnemy2->GetX() == pEnemy2->GetLastX())
-	{
-		m_Board[pEnemy2->GetY()][pEnemy2->GetX()] = pEnemy2->GetSymbol();
-	}
-	else
-	{
-		m_Board[pEnemy2->GetY()][pEnemy2->GetX()] = pEnemy2->GetSymbol();
-		m_Board[pEnemy2->GetLastY()][pEnemy2->GetLastX()] = '.';
+		else if (m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()].GetTileType() == "Mimic")
+		{
+			mTileBehavior.SetMimicTriggered(true);
+			m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = mTileBehavior.ExecuteStrategy(mimicTile);
+		}
+
+		else if(m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()].GetTileType() == "Bomb")
+		{
+			mTileBehavior.SetBombTriggered(true);
+			m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = mTileBehavior.ExecuteStrategy(BombTile);
+		}
+		else if (m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()].GetTileType() == "Money")
+		{
+			mTileBehavior.SetMoneyTriggered(true);
+			m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = mTileBehavior.ExecuteStrategy(floorTile);
+		}
+		else
+		{
+			mTileBehavior.SetFloorTriggered(true);
+			m_Board[pPlayer->GetLastY()][pPlayer->GetLastX()] = mTileBehavior.ExecuteStrategy(floorTile);
+		}
+		
+
 	}
 	
 }
